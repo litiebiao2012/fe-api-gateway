@@ -232,8 +232,18 @@ public class RegistryServerSync implements InitializingBean, DisposableBean, Not
                 .serviceInterface(serviceInterface).method(method).build();
     }
 
-    public  ConcurrentMap<String, Map<Long, URL>> getProviders() {
-        return registryCache.get("providers");
+    public String getProviders() {
+        ConcurrentMap<String, Map<Long, URL>> map = registryCache.get("providers");
+        StringBuffer sb = new StringBuffer();
+
+        map.forEach((k,v) -> {
+            sb.append(k).append("\n");
+            v.forEach((k1,v1) -> {
+                sb.append("\t\t\t\t\t").append(v1.toFullString()).append("\n");
+            });
+        });
+
+        return sb.toString();
     }
 
 

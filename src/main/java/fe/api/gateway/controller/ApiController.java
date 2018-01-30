@@ -10,6 +10,7 @@ import fe.core.Assert;
 import fe.core.FastJson;
 import fe.core.HttpClientUtils;
 import fe.core.exception.BizException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.RandomUtils;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
@@ -26,6 +28,7 @@ import java.util.Map;
 /**
  * Created by fe on 2018/1/26.
  */
+@Slf4j
 @RestController
 public class ApiController {
     @Resource
@@ -42,8 +45,12 @@ public class ApiController {
     }
 
     @RequestMapping("/echoProviders")
-    public ApiResponse echoProviders() {
-        return ApiResponse.successApiResponse().withData(registryServerSync.getProviders());
+    public void echoProviders(HttpServletResponse servletResponse) {
+        try {
+            IOUtils.write(registryServerSync.getProviders(),servletResponse.getOutputStream());
+        } catch (IOException e) {
+            log.error("echoProviders error , e : {}",e);
+        }
     }
 
     private long randomId() {
