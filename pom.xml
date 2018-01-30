@@ -79,6 +79,56 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>utf-8</encoding>
+                    <useDefaultDelimiters>true</useDefaultDelimiters>
+                </configuration>
+            </plugin>
         </plugins>
+
+        <resources>
+            <!-- 先指定 src/main/resources下所有文件及文件夹为资源文件 -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>spring/spring-datasource.xml</include>
+                    <include>spring/spring-redis.xml</include>
+                    <include>spring/spring-dubbo.xml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
+
+
+    <profiles>
+        <profile>
+            <id>develop</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <filters>
+                    <filter>api-develop.properties</filter>
+                </filters>
+            </build>
+        </profile>
+        <profile>
+            <id>product</id>
+            <build>
+                <filters>
+                    <filter>api-product.properties</filter>
+                </filters>
+            </build>
+        </profile>
+    </profiles>
 </project>

@@ -8,7 +8,7 @@
     <dubbo:application name="fe-api-gateway"/>
 
     <dubbo:registry protocol="zookeeper"
-                    address="127.0.0.1:2181" check="false" file="false"/>
+                    address="${zookeeper.address}" check="false" file="false"/>
 
     <dubbo:reference id="registryService" interface="com.alibaba.dubbo.registry.RegistryService" check="false"/>
 
